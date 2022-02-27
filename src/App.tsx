@@ -1,5 +1,4 @@
 import "./App.css";
-import "./config";
 
 function App() {
   return (

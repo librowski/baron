@@ -55,9 +55,11 @@
     "windows": [
       {
         "title": "Baron",
-        "height": 72,
+        "height": 0,
+        "width": 0,
         "resizable": false,
-        "fullscreen": false
+        "decorations": false,
+        "skipTaskbar": true,
       }
     ],
     "security": {
