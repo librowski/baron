@@ -5,6 +5,14 @@
 
 use tauri::Manager;
 use gtk::prelude::*;
+use std::process::Command;
+
+#[tauri::command]
+fn exec(command: String) {
+    println!("calling: {}", command);
+
+    Command::new(command).status().expect("Failed to execute");
+}
 
 fn main() {
   tauri::Builder::default()
@@ -20,13 +28,13 @@ fn main() {
         let position = monitor.position();
 
 
-        let bar_width = size.width as u64;
-        let bar_height: u32 = 72;
+        let bar_width = size.width;
+        let bar_height = 80;
 
         let bar_x = position.x;
-        let bar_y = (position.y as i32) + (size.height as i32) - 72;
+        let bar_y = position.y + (size.height as i32) - bar_height;
 
-        gdk_window.move_resize(bar_x, bar_y, bar_width as i32, bar_height as i32);
+        gdk_window.move_resize(bar_x, bar_y, bar_width as i32, bar_height);
 
         gtk::gdk::property_change(
             &gdk_window,
@@ -37,21 +45,13 @@ fn main() {
             gtk::gdk::ChangeData::ULongs(&[0, 0, 0, bar_height as u64])
         );
 
-        gdk_window.show();
-
-        /* gtk::gdk::property_change(
-            &gdk_window,
-            &gtk::gdk::Atom::intern("_NET_WM_STRUT_PARTIAL"),
-            &gtk::gdk::Atom::intern("CARDINAL"),
-            32,
-            gtk::gdk::PropMode::Replace,
-            gtk::gdk::ChangeData::ULongs(&[0, 0, bar_height as u64, 0, 0, 0, 0, 0, position.x as u64, (position.x as u64) + bar_width - 1, 0, 0])
-        ); */
-
         gdk_window.stick();
+
+        gdk_window.show();
 
         Ok(())
     })
+    .invoke_handler(tauri::generate_handler![exec])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
