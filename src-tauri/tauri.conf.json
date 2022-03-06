@@ -61,6 +61,18 @@
         "decorations": false,
         "skipTaskbar": true,
         "transparent": true
+      },
+      {
+        "label": "workspacesMenu",
+        "title": "Workspaces",
+        "height": 0,
+        "width": 0,
+        "resizable": false,
+        "decorations": false,
+        "skipTaskbar": true,
+        "transparent": true,
+        "url": "workspaces-menu.html",
+        "visible": false
       }
     ],
     "security": {
